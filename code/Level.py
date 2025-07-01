@@ -1,4 +1,4 @@
-from Entity import Entity
+from code.Entity import Entity
 
 class Level:
 
