@@ -1,5 +1,6 @@
 # C
 COLOR_WHITE = (255, 255, 255)
+COLOR_ORANGE = (0, 0, 0)
 
 # M
 
