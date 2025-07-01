@@ -22,7 +22,7 @@ class Menu:
             
             for i in range(len(MENU_OPTION)):
                 
-                self.menu_text(60, MENU_OPTION[i], COLOR_WHITE, ((WIN_WIDTH/2), 335cle + 50 * i))
+                self.menu_text(60, MENU_OPTION[i], COLOR_WHITE, ((WIN_WIDTH/2), 335 + 50 * i))
 
             pygame.display.flip()
 
