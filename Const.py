@@ -2,6 +2,12 @@
 COLOR_WHITE = (255, 255, 255)
 COLOR_ORANGE = (0, 0, 0)
 
+# E
+ENTITY_SPEED = {
+    'LevelBg0': 1,
+    'LevelBg1': 3
+}
+
 # M
 
 MENU_OPTION = ('JOGAR MODO FÁCIL',

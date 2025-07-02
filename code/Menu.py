@@ -23,12 +23,9 @@ class Menu:
             self.window.blit(source = self.surf, dest = self.rect)
             
             for i in range(len(MENU_OPTION)):
-
                 if i == menu_option:
                     self.menu_text(60, MENU_OPTION[i], COLOR_ORANGE, ((WIN_WIDTH/2), 335 + 50 * i))
-
                 else:
-
                     self.menu_text(60, MENU_OPTION[i], COLOR_WHITE, ((WIN_WIDTH/2), 335 + 50 * i))
 
             for event in pygame.event.get():
@@ -51,8 +48,6 @@ class Menu:
                 
                     if event.key == pygame.K_RETURN:
                         return MENU_OPTION[menu_option]
-            
-            
             
             pygame.display.flip()
 
