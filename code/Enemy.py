@@ -6,8 +6,6 @@ class Enemy(Entity):
     def __init__(self, name: str, position: tuple):
         super().__init__(name, position)
 
-    def move(self, events = None):
-        
+    def move(self, events=None):
         self.rect.centerx -= ENTITY_SPEED[self.name]
-        if self.rect.right <= 0:
-            self.rect.left = WIN_WIDTH
+    # NÃO reposiciona mais — deixa ele sair da tela para poder ser removido no Level

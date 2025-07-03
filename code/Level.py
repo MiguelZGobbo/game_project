@@ -19,6 +19,8 @@ class Level:
         self.entity_list.append(EntityFactory.get_entity('Player1'))
         self.timeout = 20000
         self.entity_list.extend(EntityFactory.get_entity('Enemy1'))
+        self.new_wave_generated = False
+
 
     def run(self):
 
@@ -34,33 +36,29 @@ class Level:
                 if event.type == pygame.QUIT:
                     running = False
 
-            should_generate_enemies = False
-            has_enemies_on_right = False
-            for ent in self.entity_list:
-                if isinstance(ent, Enemy):
-                    if ent.rect.x <= WIN_WIDTH / 2:
-                        # Um inimigo atingiu a metade da tela
-                        has_enemies_on_right = any(
-                            isinstance(e, Enemy) and e.rect.x > WIN_WIDTH / 2
-                            for e in self.entity_list
-                        )
-                        if not has_enemies_on_right and not self.new_wave_generated:
-                            should_generate_enemies = True
-                    elif ent.rect.x > WIN_WIDTH / 2:
-                        has_enemies_on_right = True
+            # Se não houver inimigos e a última onda já foi gerada, prepare para nova geração
+            should_generate_enemies = not any(isinstance(ent, Enemy) for ent in self.entity_list) and not self.new_wave_generated
+            
+            # DEBUG: Mostra posições x dos inimigos na tela
+            inimigos_x = [ent.rect.x for ent in self.entity_list if isinstance(ent, Enemy)]
+            print(f"[DEBUG] Inimigos na tela (x): {inimigos_x}")
 
-            # Gera novos inimigos se necessário e marca a geração
+            # Remove inimigos que saíram totalmente da tela à esquerda
+            self.entity_list = [
+                ent for ent in self.entity_list
+                if not (isinstance(ent, Enemy) and ent.rect.right < 0)
+            ]
+
+            # Gera novos inimigos se necessário
             if should_generate_enemies:
                 novos_inimigos = EntityFactory.get_entity('Enemy1')
                 self.entity_list.extend(novos_inimigos)
                 self.new_wave_generated = True
 
-            # Reinicia a flag se todos os inimigos tiverem passado da metade da tela
-            if all(
-                not isinstance(ent, Enemy) or ent.rect.x > WIN_WIDTH / 2
-                for ent in self.entity_list
-            ):
+            # Reset da flag: se não houver mais nenhum inimigo
+            if not any(isinstance(ent, Enemy) for ent in self.entity_list):
                 self.new_wave_generated = False
+
 
             self.window.fill((0, 0, 0))    
                     
