@@ -2,7 +2,7 @@ import pygame
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from Const import COLOR_WHITE, COLOR_BLACK, WIN_WIDTH
+from Const import COLOR_WHITE, WIN_HEIGHT, WIN_WIDTH, MENU_OPTION
 from code.Entity import Entity
 from code.Player import Player
 from code.EntityFactory import EntityFactory
@@ -33,8 +33,8 @@ class Level:
                 if event.type == pygame.QUIT:
                     running = False
 
-            # Atualiza a lista de entidades com verificação, remoção e adição feita pelo EntityMediator
-            self.entity_list = EntityMediator.verify_collision(entity_list=self.entity_list)
+            # Passa o game_mode para a verificação de colisão
+            self.entity_list = EntityMediator.verify_collision(entity_list=self.entity_list, game_mode=self.game_mode)
 
             # Verifica colisão para pontuação
             player = next((ent for ent in self.entity_list if isinstance(ent, Player)), None)
@@ -42,12 +42,12 @@ class Level:
             if player:
                 collision_occurring = EntityMediator._EntityMediator__verify_player_enemy_collision(player, self.entity_list)
             
-            # Atualiza pontuação se não houver colisão (1 ponto por segundo)
+            # Atualiza pontuação se não houver colisão (1 ponto a cada 30 segundos)
             if not collision_occurring:
                 current_time = pygame.time.get_ticks()
                 time_elapsed = (current_time - self.last_score_time) // 250  # Segundos completos
                 if time_elapsed > 0:
-                    self.score += time_elapsed  # Incrementa 1 ponto por segundo
+                    self.score += time_elapsed  # Incrementa 1 ponto a cada 30 segundos
                     self.last_score_time = current_time
             else:
                 self.last_score_time = pygame.time.get_ticks()  # Reseta o tempo base na colisão
