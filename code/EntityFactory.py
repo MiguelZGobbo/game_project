@@ -27,7 +27,6 @@ class EntityFactory:
             case 'Enemy1':
                 tracker_positions = [TRACK_TOP, TRACK_MIDDLE, TRACK_DOWN]
                 pistas = random.sample(tracker_positions, 2)
-                print(f"[DEBUG] Sorteio novo de inimigos: {pistas}")
 
                 inimigos = []
                 x_pos = WIN_WIDTH + 10

@@ -38,10 +38,6 @@ class Level:
 
             # Se não houver inimigos e a última onda já foi gerada, prepare para nova geração
             should_generate_enemies = not any(isinstance(ent, Enemy) for ent in self.entity_list) and not self.new_wave_generated
-            
-            # DEBUG: Mostra posições x dos inimigos na tela
-            inimigos_x = [ent.rect.x for ent in self.entity_list if isinstance(ent, Enemy)]
-            print(f"[DEBUG] Inimigos na tela (x): {inimigos_x}")
 
             # Remove inimigos que saíram totalmente da tela à esquerda
             self.entity_list = [
