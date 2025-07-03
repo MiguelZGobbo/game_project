@@ -21,7 +21,7 @@ class EntityFactory:
                 return lista_bg
             
             case 'Player1':
-                return Player('Player1', (20, TRACK_MIDDLE))
+                return Player('Player1', (80, TRACK_MIDDLE))
             
             case 'Enemy1':
                 # Define velocidade inicial e incremento apenas se o game_mode mudou ou é a primeira onda

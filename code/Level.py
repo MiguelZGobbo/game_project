@@ -7,6 +7,7 @@ from code.Entity import Entity
 from code.Player import Player
 from code.EntityFactory import EntityFactory
 from code.EntityMediator import EntityMediator
+from code.Menu import Menu
 
 class Level:
 
@@ -31,26 +32,26 @@ class Level:
 
             for event in events:
                 if event.type == pygame.QUIT:
-                    running = False
+                    pygame.quit()
+                    quit()
 
             # Passa o game_mode para a verificação de colisão
             self.entity_list = EntityMediator.verify_collision(entity_list=self.entity_list, game_mode=self.game_mode)
 
             # Verifica colisão para pontuação
             player = next((ent for ent in self.entity_list if isinstance(ent, Player)), None)
-            collision_occurring = False
             if player:
                 collision_occurring = EntityMediator._EntityMediator__verify_player_enemy_collision(player, self.entity_list)
-            
+                if collision_occurring:
+                    # Volta ao menu após colisão
+                    return  # Retorna ao menu principal no Game.py
+
             # Atualiza pontuação se não houver colisão (1 ponto a cada 30 segundos)
-            if not collision_occurring:
-                current_time = pygame.time.get_ticks()
-                time_elapsed = (current_time - self.last_score_time) // 250  # Segundos completos
-                if time_elapsed > 0:
-                    self.score += time_elapsed  # Incrementa 1 ponto a cada 30 segundos
-                    self.last_score_time = current_time
-            else:
-                self.last_score_time = pygame.time.get_ticks()  # Reseta o tempo base na colisão
+            current_time = pygame.time.get_ticks()
+            time_elapsed = (current_time - self.last_score_time) // 250  # Segundos completos
+            if time_elapsed > 0:
+                self.score += time_elapsed  # Incrementa 1 ponto a cada 30 segundos
+                self.last_score_time = current_time
 
             # Renderiza as entidades na tela
             self.window.fill((0, 0, 0))    
@@ -65,9 +66,6 @@ class Level:
             self.level_text(22, f'FPS: {clock.get_fps():.0f}', COLOR_WHITE, (WIN_WIDTH - 10, 5), align_right=True)
 
             pygame.display.flip()
-            
-        pygame.quit()
-        quit()
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple, align_right: bool = False):
         text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter", size=text_size)
