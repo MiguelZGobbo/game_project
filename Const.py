@@ -2,14 +2,14 @@ import pygame
 
 # C
 COLOR_WHITE = (255, 255, 255)
-COLOR_ORANGE = (0, 0, 0)
+COLOR_BLACK = (0, 0, 0)
 
 # E
 EVENT_ENEMY = pygame.USEREVENT + 1
 ENTITY_SPEED = {
     'LevelBg0': 0.5,
     'LevelBg1': 2,
-    'Enemy1': 25
+    'Enemy1': 3
 }
 
 # M

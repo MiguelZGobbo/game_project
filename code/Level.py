@@ -1,10 +1,10 @@
 import pygame
-
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from Const import COLOR_WHITE, WIN_HEIGHT, WIN_WIDTH
+from Const import COLOR_WHITE, COLOR_BLACK, WIN_WIDTH
 from code.Entity import Entity
+from code.Player import Player
 from code.EntityFactory import EntityFactory
 from code.EntityMediator import EntityMediator
 
@@ -18,6 +18,8 @@ class Level:
         self.entity_list.extend(EntityFactory.get_entity('LevelBg'))
         self.entity_list.append(EntityFactory.get_entity('Player1'))
         self.timeout = 20000
+        self.score = 0
+        self.last_score_time = pygame.time.get_ticks()  # Tempo do último reset ou início
 
     def run(self):
         clock = pygame.time.Clock()
@@ -34,6 +36,22 @@ class Level:
             # Atualiza a lista de entidades com verificação, remoção e adição feita pelo EntityMediator
             self.entity_list = EntityMediator.verify_collision(entity_list=self.entity_list)
 
+            # Verifica colisão para pontuação
+            player = next((ent for ent in self.entity_list if isinstance(ent, Player)), None)
+            collision_occurring = False
+            if player:
+                collision_occurring = EntityMediator._EntityMediator__verify_player_enemy_collision(player, self.entity_list)
+            
+            # Atualiza pontuação se não houver colisão (1 ponto por segundo)
+            if not collision_occurring:
+                current_time = pygame.time.get_ticks()
+                time_elapsed = (current_time - self.last_score_time) // 250  # Segundos completos
+                if time_elapsed > 0:
+                    self.score += time_elapsed  # Incrementa 1 ponto por segundo
+                    self.last_score_time = current_time
+            else:
+                self.last_score_time = pygame.time.get_ticks()  # Reseta o tempo base na colisão
+
             # Renderiza as entidades na tela
             self.window.fill((0, 0, 0))    
             for ent in self.entity_list:
@@ -41,17 +59,27 @@ class Level:
                 ent.move(events)
 
             # Exibe textos na tela
-            self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', COLOR_WHITE, (10, 5))
-            self.level_text(14, f'fps: {clock.get_fps():.0f}', COLOR_WHITE, (10, WIN_HEIGHT - 35))
-            self.level_text(14, f'entidades: {len(self.entity_list)}', COLOR_WHITE, (10, WIN_HEIGHT - 20))
-           
+            # Pontuação (esquerda)
+            self.level_text(22, f'Pontuação: {self.score}', COLOR_WHITE, (10, 5))
+            # FPS (canto superior direito)
+            self.level_text(22, f'FPS: {clock.get_fps():.0f}', COLOR_WHITE, (WIN_WIDTH - 10, 5), align_right=True)
+
             pygame.display.flip()
             
         pygame.quit()
         quit()
 
-    def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
+    def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple, align_right: bool = False):
         text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter", size=text_size)
         text_surf: Surface = text_font.render(text, True, text_color).convert_alpha()
-        text_rect: Rect = text_surf.get_rect(left=text_pos[0], top=text_pos[1])
+        text_rect: Rect = text_surf.get_rect()
+        
+        # Define a posição do texto
+        if align_right:
+            text_rect.right = text_pos[0]
+            text_rect.top = text_pos[1]
+        else:
+            text_rect.left = text_pos[0]
+            text_rect.top = text_pos[1]
+        
         self.window.blit(source=text_surf, dest=text_rect)
