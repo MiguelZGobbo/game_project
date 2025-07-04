@@ -11,6 +11,19 @@ class EntityFactory:
     current_game_mode = None
 
     @staticmethod
+    def reset_speed(game_mode: str):
+        EntityFactory.base_opponent_speed = ENTITY_SPEED['Opponent1']
+        EntityFactory.speed_increment = 0.5
+        if game_mode == MENU_OPTION[1]:  # Modo Médio
+            EntityFactory.base_opponent_speed += 1.0
+            EntityFactory.speed_increment = 0.65
+        elif game_mode == MENU_OPTION[2]:  # Modo Difícil
+            EntityFactory.base_opponent_speed += 1.5
+            EntityFactory.speed_increment = 0.80
+        EntityFactory.current_game_mode = game_mode
+        EntityFactory.new_wave_generated = False
+
+    @staticmethod
     def get_entity(entity_name: str, current_entities=None, game_mode=None):
         match entity_name:
             case 'LevelBg':
@@ -25,15 +38,7 @@ class EntityFactory:
             
             case 'Opponent1':
                 if game_mode != EntityFactory.current_game_mode:
-                    EntityFactory.base_opponent_speed = ENTITY_SPEED['Opponent1']
-                    EntityFactory.speed_increment = 0.5
-                    if game_mode == MENU_OPTION[1]:
-                        EntityFactory.base_opponent_speed += 1.0
-                        EntityFactory.speed_increment = 0.65
-                    elif game_mode == MENU_OPTION[2]:
-                        EntityFactory.base_opponent_speed += 1.5
-                        EntityFactory.speed_increment = 0.80
-                    EntityFactory.current_game_mode = game_mode
+                    EntityFactory.reset_speed(game_mode)
 
                 should_generate_opponents = (
                     current_entities is not None and

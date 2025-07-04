@@ -22,6 +22,7 @@ class Level:
         pygame.mixer_music.stop()
         pygame.mixer_music.load('./asset/Level.mp3')
         pygame.mixer_music.play(-1)
+        EntityFactory.reset_speed(game_mode)  # Reinicia a velocidade dos oponentes
 
     def run(self):
         clock = pygame.time.Clock()
@@ -53,7 +54,7 @@ class Level:
             self.window.fill((0, 0, 0))    
             for entity in self.entity_list:
                 self.window.blit(source=entity.surface, dest=entity.rect)
-                entity.move(events)
+                entity.move(events)  # Correção do erro de sintaxe
 
             self.level_text(22, f'Score: {self.score}', COLOR_WHITE, (10, 5))
             self.level_text(22, f'FPS: {clock.get_fps():.0f}', COLOR_WHITE, (WIN_WIDTH - 10, 5), align_right=True)
