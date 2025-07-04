@@ -7,7 +7,7 @@ COLOR_BLACK = (0, 0, 0)
 # E
 EVENT_ENEMY = pygame.USEREVENT + 1
 ENTITY_SPEED = {
-    'LevelBg0': 0.5,
+    'LevelBg0': 1,
     'LevelBg1': 2,
     'Enemy1': 3
 }
