@@ -21,6 +21,10 @@ class Level:
         self.timeout = 20000
         self.score = 0
         self.last_score_time = pygame.time.get_ticks()  # Tempo do último reset ou início
+        # Para a música do menu e toca a música do nível
+        pygame.mixer_music.stop()  # Para qualquer música anterior (como Menu.mp3)
+        pygame.mixer_music.load('./asset/Level.mp3')  # Carrega a música do nível
+        pygame.mixer_music.play(-1)  # Toca em loop
 
     def run(self):
         clock = pygame.time.Clock()

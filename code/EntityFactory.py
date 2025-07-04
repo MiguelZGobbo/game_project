@@ -24,20 +24,18 @@ class EntityFactory:
                 return Player('Player1', (80, TRACK_MIDDLE))
             
             case 'Enemy1':
-                # Define velocidade inicial e incremento apenas se o game_mode mudou ou é a primeira onda
                 if game_mode != EntityFactory._current_game_mode:
                     EntityFactory._base_enemy_speed = ENTITY_SPEED['Enemy1']
-                    EntityFactory._speed_increment = 0.5  # Padrão para Fácil
-                    if game_mode == MENU_OPTION[1]:  # 'JOGAR MODO MÉDIO'
-                        EntityFactory._base_enemy_speed += 1.0  # 3 + 1 = 4.0
+                    EntityFactory._speed_increment = 0.5
+                    if game_mode == MENU_OPTION[1]:
+                        EntityFactory._base_enemy_speed += 1.0
                         EntityFactory._speed_increment = 0.65
-                    elif game_mode == MENU_OPTION[2]:  # 'JOGAR MODO DIFÍCIL'
-                        EntityFactory._base_enemy_speed += 1.5  # 3 + 1.5 = 4.5
+                    elif game_mode == MENU_OPTION[2]:
+                        EntityFactory._base_enemy_speed += 1.5
                         EntityFactory._speed_increment = 0.80
                     EntityFactory._current_game_mode = game_mode
                     print(f"[EntityFactory] Novo modo iniciado - Modo: {game_mode}, Velocidade inicial: {EntityFactory._base_enemy_speed}")
 
-                # Verifica se deve gerar nova onda de inimigos
                 should_generate_enemies = (
                     current_entities is not None and
                     not any(isinstance(ent, Enemy) for ent in current_entities) and
@@ -57,7 +55,6 @@ class EntityFactory:
                     print(f"[EntityFactory] Nova onda criada - Modo: {game_mode}, Velocidade inicial: {EntityFactory._base_enemy_speed}")
                     return inimigos
                 
-                # Reset da flag se não houver mais inimigos
                 if current_entities is not None and not any(isinstance(ent, Enemy) for ent in current_entities):
                     EntityFactory._new_wave_generated = False
                 
