@@ -1,8 +1,8 @@
-# Track Runner
+# RETRO CAR HORIZON
 
 ## Sobre
 
-Track Runner é um jogo arcade 2D desenvolvido com Pygame. O jogador controla um carro que se move entre três pistas para evitar adversários. O jogo tem três modos de dificuldade (Fácil, Médio, Difícil) e termina com uma colisão. A pontuação aumenta a cada 0,25 segundos sem colisões.
+Retro Car Horizon é um jogo arcade 2D desenvolvido com Pygame. O jogador controla um carro que se move entre três pistas para evitar adversários. O jogo tem três modos de dificuldade (Fácil, Médio, Difícil) e termina com uma colisão. A pontuação aumenta a cada 0,25 segundos sem colisões.
 
 ## Menu do Jogo
 
@@ -10,11 +10,11 @@ Track Runner é um jogo arcade 2D desenvolvido com Pygame. O jogador controla um
 
 
 
-Navegue com as teclas Cima e Baixo.
+- Navegue com as teclas Cima e Baixo.
 
 
 
-Selecione com Enter: Fácil, Médio, Difícil ou Sair.
+- Selecione com Enter: Fácil, Médio, Difícil ou Sair.
 
 ## Nível do Jogo
 
@@ -22,20 +22,20 @@ Selecione com Enter: Fácil, Médio, Difícil ou Sair.
 
 
 
-Use Cima e Baixo para mudar de pista (superior, intermediária, inferior).
+- Use Cima e Baixo para mudar de pista (superior, intermediária, inferior).
 
 
 
-Evite adversários que vêm da direita.
+- Evite adversários que vêm da direita.
 
 
 
-Pontuação exibida no canto superior esquerdo.
+- Pontuação exibida no canto superior esquerdo.
 
 
 
-FPS exibido no canto superior direito.
+- FPS exibido no canto superior direito.
 
 
 
-O jogo retorna ao menu após uma colisão.
+- O jogo retorna ao menu após uma colisão.
