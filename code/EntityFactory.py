@@ -1,61 +1,58 @@
 import random
-from Const import WIN_WIDTH, WIN_HEIGHT, TRACK_MIDDLE, TRACK_TOP, TRACK_DOWN, ENTITY_SPEED, MENU_OPTION
+from code.Const import WIN_WIDTH, TRACK_MIDDLE, TRACK_TOP, TRACK_DOWN, ENTITY_SPEED, MENU_OPTION
 from code.Background import Background
 from code.Player import Player
-from code.Enemy import Enemy
+from code.Opponent import Opponent
 
 class EntityFactory:
-    _new_wave_generated = False
-    _base_enemy_speed = ENTITY_SPEED['Enemy1']  # Velocidade base inicial
-    _speed_increment = 0.5  # Incremento padrão para Fácil
-    _current_game_mode = None  # Rastreia o modo de jogo atual
+    new_wave_generated = False
+    base_opponent_speed = ENTITY_SPEED['Opponent1']
+    speed_increment = 0.5
+    current_game_mode = None
 
     @staticmethod
-    def get_entity(entity_name: str, position=(0,0), current_entities=None, game_mode=None):
+    def get_entity(entity_name: str, current_entities=None, game_mode=None):
         match entity_name:
             case 'LevelBg':
-                lista_bg = []
+                background_list = []
                 for i in range(2):
-                    lista_bg.append(Background(f'LevelBg{i}', (0,0)))
-                    lista_bg.append(Background(f'LevelBg{i}', (WIN_WIDTH,0)))
-                return lista_bg
+                    background_list.append(Background(f'LevelBg{i}', (0,0)))
+                    background_list.append(Background(f'LevelBg{i}', (WIN_WIDTH,0)))
+                return background_list
             
             case 'Player1':
                 return Player('Player1', (80, TRACK_MIDDLE))
             
-            case 'Enemy1':
-                if game_mode != EntityFactory._current_game_mode:
-                    EntityFactory._base_enemy_speed = ENTITY_SPEED['Enemy1']
-                    EntityFactory._speed_increment = 0.5
+            case 'Opponent1':
+                if game_mode != EntityFactory.current_game_mode:
+                    EntityFactory.base_opponent_speed = ENTITY_SPEED['Opponent1']
+                    EntityFactory.speed_increment = 0.5
                     if game_mode == MENU_OPTION[1]:
-                        EntityFactory._base_enemy_speed += 1.0
-                        EntityFactory._speed_increment = 0.65
+                        EntityFactory.base_opponent_speed += 1.0
+                        EntityFactory.speed_increment = 0.65
                     elif game_mode == MENU_OPTION[2]:
-                        EntityFactory._base_enemy_speed += 1.5
-                        EntityFactory._speed_increment = 0.80
-                    EntityFactory._current_game_mode = game_mode
-                    print(f"[EntityFactory] Novo modo iniciado - Modo: {game_mode}, Velocidade inicial: {EntityFactory._base_enemy_speed}")
+                        EntityFactory.base_opponent_speed += 1.5
+                        EntityFactory.speed_increment = 0.80
+                    EntityFactory.current_game_mode = game_mode
 
-                should_generate_enemies = (
+                should_generate_opponents = (
                     current_entities is not None and
-                    not any(isinstance(ent, Enemy) for ent in current_entities) and
-                    not EntityFactory._new_wave_generated
+                    not any(isinstance(entity, Opponent) for entity in current_entities) and
+                    not EntityFactory.new_wave_generated
                 )
 
-                if should_generate_enemies:
-                    tracker_positions = [TRACK_TOP, TRACK_MIDDLE, TRACK_DOWN]
-                    pistas = random.sample(tracker_positions, 2)
-
-                    inimigos = []
+                if should_generate_opponents:
+                    track_positions = [TRACK_TOP, TRACK_MIDDLE, TRACK_DOWN]
+                    tracks = random.sample(track_positions, 2)
+                    opponents = []
                     x_pos = WIN_WIDTH + 10
-                    for y_pos in pistas:
-                        inimigo = Enemy('Enemy1', (x_pos, y_pos), speed=EntityFactory._base_enemy_speed)
-                        inimigos.append(inimigo)
-                    EntityFactory._new_wave_generated = True
-                    print(f"[EntityFactory] Nova onda criada - Modo: {game_mode}, Velocidade inicial: {EntityFactory._base_enemy_speed}")
-                    return inimigos
+                    for y_pos in tracks:
+                        opponent = Opponent('Opponent1', (x_pos, y_pos), speed=EntityFactory.base_opponent_speed)
+                        opponents.append(opponent)
+                    EntityFactory.new_wave_generated = True
+                    return opponents
                 
-                if current_entities is not None and not any(isinstance(ent, Enemy) for ent in current_entities):
-                    EntityFactory._new_wave_generated = False
+                if current_entities is not None and not any(isinstance(entity, Opponent) for entity in current_entities):
+                    EntityFactory.new_wave_generated = False
                 
                 return []

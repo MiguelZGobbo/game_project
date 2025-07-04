@@ -1,17 +1,13 @@
 import pygame
 
-from Const import TRACK_TOP, TRACK_MIDDLE, TRACK_DOWN 
+from code.Const import TRACK_TOP, TRACK_MIDDLE, TRACK_DOWN 
 from code.Entity import Entity
 
 class Player(Entity):
-
     def __init__(self, name: str, position: tuple):
         super().__init__(name, position)
         self.current_track = 1
-        self.rect.centery = position[1]  # Alinha o centro da sprite à pista (ex.: TRACK_MIDDLE)
-
-    def update(self):
-        pass
+        self.rect.centery = position[1]
 
     def move(self, events):
         for event in events:
